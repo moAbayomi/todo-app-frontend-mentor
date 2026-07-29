@@ -1,0 +1,27 @@
+[
+	{
+		"id": 0,
+		"task": "Jog around the park",
+		"completed": false
+	},
+	{
+		"id": 1,
+		"task": "10 minutes meditation",
+		"completed": false
+	},
+	{
+		"id": 2,
+		"task": "Jog around the park",
+		"completed": false
+	},
+	{
+		"id": 3,
+		"task": "Pick up groceries",
+		"completed": false
+	},
+	{
+		"id": 4,
+		"task": "Complete Todo app on frontend mentor",
+		"completed": false
+	}
+]

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="styles.css" />
+		<title>Todo App</title>
+	</head>
+	<body>
+		<div id="container">
+			<div id="top-bg"></div>
+			<header>
+				<div class="header">
+					<h1 id="title">TODO</h1>
+					<span id="theme"
+						><img id="theme-img" src="./assets/icon-sun.svg" alt="" />
+					</span>
+				</div>
+				<div id="entry">
+					<span class="entry-indicator"><div></div></span>
+					<span id="entry-input"
+						><input type="text" placeholder="Create a new todo..."
+					/></span>
+				</div>
+			</header>
+			<main>
+				<ul>
+
+					
+				</ul>
+				<section id="base-of-main">
+					<span>5 items left</span>
+					<div id="tabs">
+						<button>All</button>
+						<button>Active</button><button>Completed</button>
+					</div>
+					<div><button>Clear Completed</button></div>
+				</section>
+			</main>
+			<footer><p>Drag and drop to reorder list</p></footer>
+		</div>
+	</body>
+	<script src="./script.js"></script>
+</html>
