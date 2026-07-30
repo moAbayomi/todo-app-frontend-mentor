@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const themeImg = document.getElementById("theme-img");
 	const body = document.querySelector("body");
 	const listContainer = document.querySelector("ul");
+	const tabSwitcherContainer = document.querySelector("#base-of-main");
 
 	let TASKS = [];
 
@@ -18,9 +19,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 		renderAll();
 	}
 
-	function renderAll() {
+	function renderAll(taskArr = TASKS) {
 		listContainer.innerHTML = "";
-		TASKS.forEach((entry) => {
+		taskArr.forEach((entry) => {
 			render(entry);
 		});
 	}
@@ -53,6 +54,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 		renderAll();
 	}
 
+	function loadCompletedAndRender() {
+		console.log("loading completed and render");
+		const completed = TASKS.filter((entry) => entry.completed == true);
+		renderAll(completed);
+	}
+
+	function loadActiveAndRender() {
+		console.log("loading active and render");
+		const active = TASKS.filter((entry) => entry.completed == false);
+		renderAll(active);
+	}
+
+	function clearCompletedAndRender() {
+		TASKS = TASKS.filter((entry) => {
+			return !entry.completed;
+		});
+		console.log(TASKS);
+		renderAll();
+	}
+
 	async function init() {
 		await loadAndRender();
 	}
@@ -75,15 +96,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 			deleteAndRender(id);
 			li.remove();
 		}
-		
+
 		if (e.target.closest(".entry-indicator")) {
 			const li = e.target.closest("li");
-			console.log(li)
+			console.log(li);
 			const id = li.id;
 			lineThroughAndRender(id);
 		}
 	});
-	console.log(TASKS);
+
+	tabSwitcherContainer.addEventListener("click", (e) => {
+		if (e.target.closest(".all")) {
+			renderAll();
+		}
+
+		if (e.target.closest(".completed")) {
+			loadCompletedAndRender();
+		}
+
+		if (e.target.closest(".active")) {
+			loadActiveAndRender();
+		}
+
+		if (e.target.closest(".clear-completed")) {
+			console.log("hehe");
+			clearCompletedAndRender();
+		}
+	});
 	await init();
-	console.log(TASKS);
 });
