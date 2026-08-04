@@ -108,6 +108,11 @@ header #entry #entry-input {
 	flex: 1;
 }
 
+header #entry #entry-input input {
+	color: var(--text-primary);
+
+}
+
 .entry-indicator div {
 	width: 20px;
 	height: 20px;
@@ -146,6 +151,13 @@ li {
 li .close-box {
 	margin-left: auto;
 	cursor: pointer;
+}
+
+.todo-entry.dragging {
+    opacity: 0.4;
+}
+.todo-entry.drag-over {
+    border-top: 3px solid #4a90e2;
 }
 
 #base-of-main {

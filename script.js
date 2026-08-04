@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const themeChangerBtn = document.getElementById("theme");
 	const themeImg = document.getElementById("theme-img");
 	const body = document.querySelector("body");
-	const listContainer = document.querySelector("ul");
-	const tabSwitcherContainer = document.querySelector("#base-of-main");
+  const listContainer = document.querySelector("ul");
+  const tabSwitcherContainer = document.querySelector("#base-of-main");
+	const inputElement = document.getElementById("input-bar")
 
 	let TASKS = [];
 
@@ -15,9 +16,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 	const tabs = ["All", "Active", "Completed"];
 
 	async function loadAndRender() {
-		TASKS = await entriesData();
+    TASKS = JSON.parse(localStorage.getItem("TASKS")) || await entriesData();
 		renderAll();
-	}
+  }
+
+  function saveToStorage(taskArr) {
+    localStorage.setItem("TASKS", JSON.stringify(taskArr))
+  }
 
 	function renderAll(taskArr = TASKS) {
 		listContainer.innerHTML = "";
@@ -28,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	function render({ id, task, completed }) {
 		const html = `
-		<li class="todo-entry" id=${id}>
+		<li class="todo-entry" id=${id} draggable="true">
 			<span class="entry-indicator"><div><img id="" src="assets/icon-check.svg" style="display:${completed ? "block" : "none"}" /></div></span>
 			<p style="text-decoration:${completed ? "line-through" : "none"}">${task}</p>
 			<span class="close-box"
@@ -40,7 +45,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 	}
 
 	function deleteAndRender(id) {
-		TASKS = TASKS.filter((entry) => entry.id.toString() !== id.toString());
+    TASKS = TASKS.filter((entry) => entry.id.toString() !== id.toString());
+    saveToStorage(TASKS)
 		renderAll();
 	}
 
@@ -50,7 +56,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 				return { ...entry, completed: !entry.completed };
 			}
 			return entry;
-		});
+    });
+		saveToStorage(TASKS)
 		renderAll();
 	}
 
@@ -69,14 +76,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 	function clearCompletedAndRender() {
 		TASKS = TASKS.filter((entry) => {
 			return !entry.completed;
-		});
-		console.log(TASKS);
+    });
+		saveToStorage(TASKS)
 		renderAll();
-	}
+  }
+
+  function addEntryAndRender(newTask) {
+    const newId = TASKS[TASKS.length - 1]["id"] + 1
+    const newObj = {
+      id: newId,
+      task: newTask,
+      completed: false
+    }
+    TASKS.push(newObj)
+    saveToStorage(TASKS)
+    renderAll()
+  }
 
 	async function init() {
 		await loadAndRender();
-	}
+  }
+
+  inputElement.addEventListener("keydown", function (e) {
+    if (e.key == "Enter") {
+      const newEntry = inputElement.value
+      inputElement.value = "";
+      addEntryAndRender(newEntry)
+    }
+  })
 
 	themeChangerBtn.onclick = function () {
 		const htmlClassList = document.documentElement.classList;
@@ -95,7 +122,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 			const id = li.id;
 			deleteAndRender(id);
 			li.remove();
-		}
+    }
+
+    listContainer.addEventListener("dragstart", function (e) {
+      console.log("ahh")
+      console.log(e)
+		})
 
 		if (e.target.closest(".entry-indicator")) {
 			const li = e.target.closest("li");
@@ -103,7 +135,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 			const id = li.id;
 			lineThroughAndRender(id);
 		}
-	});
+  });
+
 
 	tabSwitcherContainer.addEventListener("click", (e) => {
 		if (e.target.closest(".all")) {
